@@ -1,0 +1,34 @@
+FILE: QualifiedName.kt
+    package foo.bar
+
+    public final class SomeClass : R|kotlin/Any| {
+        public constructor(): R|foo/bar/SomeClass| {
+            super<R|kotlin/Any|>()
+        }
+
+        public final companion object Companion : R|kotlin/Any| {
+            private constructor(): R|foo/bar/SomeClass.Companion| {
+                super<R|kotlin/Any|>()
+            }
+
+        }
+
+    }
+    public final fun box(): R|kotlin/String| {
+        lval actual: R|kotlin/collections/List<kotlin/String?>| = R|kotlin/collections/listOf|<R|kotlin/String?|>(vararg(R|com/tebi/ktn/kompileTimeQualifiedName|<R|kotlin/String|>(), R|com/tebi/ktn/kompileTimeQualifiedName|<R|foo/bar/SomeClass|>(), R|com/tebi/ktn/kompileTimeQualifiedName|<R|foo/bar/SomeClass.Companion|>()))
+        lval expect: R|kotlin/collections/List<kotlin/String>| = R|kotlin/collections/listOf|<R|kotlin/String|>(vararg(String(kotlin.String), String(foo.bar.SomeClass), String(foo.bar.SomeClass.Companion)))
+        ^box when () {
+            ==(R|<local>/actual|, R|<local>/expect|) ->  {
+                String(OK)
+            }
+            else ->  {
+                <strcat>(String(Fail: ), R|<local>/actual|)
+            }
+        }
+
+    }
+FILE: __GENERATED DECLARATIONS__.kt
+    package com.tebi.ktn
+
+    public final fun <reified T : R|kotlin/Any|> kompileTimeQualifiedName(): R|kotlin/String?|
+    public final fun <reified T : R|kotlin/Any|> kompileTimeSimpleName(): R|kotlin/String?|
