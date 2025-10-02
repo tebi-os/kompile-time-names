@@ -1,6 +1,7 @@
 plugins {
     id("kompile-time-names-convention")
     alias(libs.plugins.kotlinJvm)
+    alias(libs.plugins.buildConfig)
     `java-test-fixtures`
     idea
 }
@@ -32,6 +33,12 @@ dependencies {
     testRuntimeOnly(libs.kotlin.test)
     testRuntimeOnly(libs.kotlin.scriptRuntime)
     testRuntimeOnly(libs.kotlin.annotationsJvm)
+}
+
+buildConfig {
+    packageName(BuildConfig.PACKAGE_NAME)
+
+    buildConfigField("PLUGIN_ID", BuildConfig.COMPILER_PLUGIN_ID)
 }
 
 tasks.test {

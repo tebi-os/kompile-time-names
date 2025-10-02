@@ -8,7 +8,7 @@ import org.jetbrains.kotlin.config.CompilerConfiguration
 
 class KTNCommandLineProcessor : CommandLineProcessor {
 
-    override val pluginId = "kompile-time-names"
+    override val pluginId = BuildConfig.PLUGIN_ID
 
     override val pluginOptions = emptyList<CliOption>()
 
