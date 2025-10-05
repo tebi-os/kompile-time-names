@@ -19,8 +19,8 @@ buildConfig {
     buildConfigField("TAGS", property("ktn.tags").splitToSequence(',').map { it.trim() }.toList())
     buildConfigField("PACKAGE_NAME", property("ktn.packageName"))
     buildConfigField("COMPILER_PLUGIN_ID", property("ktn.compilerPlugin.id"))
+    buildConfigField("COMPILER_PLUGIN_ARTIFACT", property("ktn.compilerPlugin.artifact"))
     buildConfigField("GRADLE_PLUGIN_ID", property("ktn.gradlePlugin.id"))
-    buildConfigField("GRADLE_PLUGIN_ARTIFACT", property("ktn.gradlePlugin.artifact"))
     buildConfigField("WEBSITE", property("ktn.website"))
     buildConfigField("VCS_URL", property("ktn.vcsUrl"))
 }

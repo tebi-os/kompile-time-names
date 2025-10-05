@@ -17,8 +17,8 @@ buildConfig {
     buildConfigField("VERSION", BuildConfig.VERSION)
     buildConfigField("GROUP", BuildConfig.GROUP)
     buildConfigField("COMPILER_PLUGIN_ID", BuildConfig.COMPILER_PLUGIN_ID)
-    buildConfigField("PLUGIN_ID", BuildConfig.GRADLE_PLUGIN_ID)
-    buildConfigField("PLUGIN_ARTIFACT", BuildConfig.GRADLE_PLUGIN_ARTIFACT)
+    buildConfigField("COMPILER_PLUGIN_ARTIFACT", BuildConfig.COMPILER_PLUGIN_ARTIFACT)
+    buildConfigField("GRADLE_PLUGIN_ID", BuildConfig.GRADLE_PLUGIN_ID)
 }
 
 gradlePlugin {

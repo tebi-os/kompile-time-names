@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlinJvm)
     alias(libs.plugins.buildConfig)
     `java-test-fixtures`
+    `maven-publish`
     idea
 }
 

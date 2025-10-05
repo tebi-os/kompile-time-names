@@ -31,7 +31,7 @@ class KTNGradlePlugin : KotlinCompilerPluginSupportPlugin {
 
     override fun getPluginArtifact() = SubpluginArtifact(
         groupId = BuildConfig.GROUP,
-        artifactId = BuildConfig.PLUGIN_ARTIFACT,
+        artifactId = BuildConfig.COMPILER_PLUGIN_ARTIFACT,
         version = BuildConfig.VERSION,
     )
 
@@ -39,7 +39,7 @@ class KTNGradlePlugin : KotlinCompilerPluginSupportPlugin {
         val kotlinVersion = getKotlinPluginVersion()
         if (kotlinVersion != BuildConfig.KOTLIN_VERSION) {
             logger.warn(
-                "Project is using Kotlin version $kotlinVersion, but ${BuildConfig.PLUGIN_ID} was built using " +
+                "Project is using Kotlin version $kotlinVersion, but ${BuildConfig.GRADLE_PLUGIN_ID} was built using " +
                         "version ${BuildConfig.KOTLIN_VERSION}. This is highly likely to lead to compilation failure."
             )
         }
