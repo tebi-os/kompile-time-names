@@ -38,6 +38,8 @@ FILE fqName:foo.bar fileName:/QualifiedName.kt
       overridden:
         public open fun toString (): kotlin.String declared in kotlin.Any
   FUN name:box visibility:public modality:FINAL returnType:kotlin.String
+    annotations:
+      OptIn(markerClass = [CLASS_REFERENCE 'CLASS IR_EXTERNAL_DECLARATION_STUB ANNOTATION_CLASS name:KompileTimeNamesUsage modality:OPEN visibility:public superTypes:[kotlin.Annotation]' type=kotlin.reflect.KClass<com.tebi.ktn.KompileTimeNamesUsage>] type=kotlin.Array<out kotlin.reflect.KClass<out kotlin.Annotation>> varargElementType=kotlin.reflect.KClass<out kotlin.Annotation>)
     BLOCK_BODY
       VAR name:actual type:kotlin.collections.List<kotlin.String?> [val]
         CALL 'public final fun listOf <T> (vararg elements: T of kotlin.collections.listOf): kotlin.collections.List<T of kotlin.collections.listOf> declared in kotlin.collections' type=kotlin.collections.List<kotlin.String?> origin=null
@@ -67,16 +69,3 @@ FILE fqName:foo.bar fileName:/QualifiedName.kt
               STRING_CONCATENATION type=kotlin.String
                 CONST String type=kotlin.String value="Fail: "
                 GET_VAR 'val actual: kotlin.collections.List<kotlin.String?> declared in foo.bar.box' type=kotlin.collections.List<kotlin.String?> origin=null
-FILE fqName:com.tebi.ktn fileName:__GENERATED DECLARATIONS__.kt
-  FUN GENERATED[com.tebi.ktn.KTNIDs.GeneratorKey] name:kompileTimeQualifiedName visibility:public modality:FINAL returnType:kotlin.String?
-    TYPE_PARAMETER GENERATED[com.tebi.ktn.KTNIDs.GeneratorKey] name:T index:0 variance: superTypes:[kotlin.Any] reified:true
-    BLOCK_BODY
-      THROW type=kotlin.Nothing
-        CONSTRUCTOR_CALL 'public constructor <init> (message: kotlin.String) declared in kotlin.NotImplementedError' type=kotlin.NotImplementedError origin=null
-          ARG message: CONST String type=kotlin.String value="This call should have been replaced by a String constant"
-  FUN GENERATED[com.tebi.ktn.KTNIDs.GeneratorKey] name:kompileTimeSimpleName visibility:public modality:FINAL returnType:kotlin.String?
-    TYPE_PARAMETER GENERATED[com.tebi.ktn.KTNIDs.GeneratorKey] name:T index:0 variance: superTypes:[kotlin.Any] reified:true
-    BLOCK_BODY
-      THROW type=kotlin.Nothing
-        CONSTRUCTOR_CALL 'public constructor <init> (message: kotlin.String) declared in kotlin.NotImplementedError' type=kotlin.NotImplementedError origin=null
-          ARG message: CONST String type=kotlin.String value="This call should have been replaced by a String constant"

@@ -21,12 +21,16 @@ idea {
     module.generatedSourceDirs.add(projectDir.resolve("src/test-gen"))
 }
 
+val apiRuntimeClasspath: Configuration by configurations.creating { isTransitive = false }
+
 dependencies {
     compileOnly(libs.kotlin.compiler)
 
     testFixturesApi(libs.kotlin.testJunit5)
     testFixturesApi(libs.kotlin.compilerInternalTestFramework)
     testFixturesApi(libs.kotlin.compiler)
+
+    apiRuntimeClasspath(projects.api)
 
     // Dependencies required to run the internal test framework.
     testRuntimeOnly(libs.junit)
@@ -37,14 +41,34 @@ dependencies {
 }
 
 buildConfig {
-    packageName(BuildConfig.PACKAGE_NAME)
+    packageName("${BuildConfig.PACKAGE_NAME}.compiler")
 
-    buildConfigField("PLUGIN_ID", BuildConfig.COMPILER_PLUGIN_ID)
+    buildConfigField("COMPILER_PLUGIN_ID", BuildConfig.COMPILER_PLUGIN_ID)
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("kotlin") {
+            from(components["java"])
+            artifactId = BuildConfig.COMPILER_PLUGIN_ARTIFACT
+        }
+    }
+
+    repositories {
+        maven {
+            name = "localPluginRepository"
+            url = uri("/Users/Desmond/local-plugin-repository")
+        }
+    }
 }
 
 tasks.test {
+    dependsOn(apiRuntimeClasspath)
+
     useJUnitPlatform()
     workingDir = rootDir
+
+    systemProperty("apiRuntime.classpath", apiRuntimeClasspath.asPath)
 
     // Properties required to run the internal test framework.
     setLibraryProperty("org.jetbrains.kotlin.test.kotlin-stdlib", "kotlin-stdlib")

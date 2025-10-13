@@ -2,6 +2,7 @@ package com.tebi.ktn.gradle
 
 import org.gradle.api.Project
 import org.gradle.api.provider.Provider
+import org.jetbrains.kotlin.gradle.dsl.kotlinExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilerPluginSupportPlugin
 import org.jetbrains.kotlin.gradle.plugin.SubpluginArtifact
@@ -14,6 +15,7 @@ class KTNGradlePlugin : KotlinCompilerPluginSupportPlugin {
 
     override fun apply(target: Project) {
         target.checkCompatibility()
+        target.addApiDependency()
     }
 
     override fun isApplicable(kotlinCompilation: KotlinCompilation<*>) = true
@@ -42,6 +44,27 @@ class KTNGradlePlugin : KotlinCompilerPluginSupportPlugin {
                 "Project is using Kotlin version $kotlinVersion, but ${BuildConfig.GRADLE_PLUGIN_ID} was built using " +
                         "version ${BuildConfig.KOTLIN_VERSION}. This is highly likely to lead to compilation failure."
             )
+        }
+    }
+
+    private fun Project.addApiDependency() {
+        val dependency = dependencies.create("${BuildConfig.GROUP}:${BuildConfig.API_ARTIFACT}:${BuildConfig.VERSION}")
+
+        plugins.withId("org.jetbrains.kotlin.jvm") {
+            dependencies.add("implementation", dependency)
+            dependencies.add("testImplementation", dependency)
+
+            plugins.withId("java-test-fixtures") {
+                dependencies.add("testFixturesImplementation", dependency)
+            }
+        }
+
+        plugins.withId("org.jetbrains.kotlin.multiplatform") {
+            kotlinExtension.sourceSets.named("commonMain").configure {
+                it.dependencies {
+                    implementation(dependency)
+                }
+            }
         }
     }
 

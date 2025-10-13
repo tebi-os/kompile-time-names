@@ -3,6 +3,7 @@ kotlin = "2.2.20"
 junit = "4.13.2"
 gradlePublish = "2.0.0"
 buildConfig = "5.6.8"
+agp = "8.12.3"
 
 [libraries]
 kotlin-compiler = { module = "org.jetbrains.kotlin:kotlin-compiler", version.ref = "kotlin" }
@@ -20,3 +21,4 @@ kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 gradlePublish = { id = "com.gradle.plugin-publish", version.ref = "gradlePublish" }
 buildConfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildConfig" }
+androidMultiplatformLibrary = { id = "com.android.kotlin.multiplatform.library", version.ref = "agp" }

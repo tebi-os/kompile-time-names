@@ -16,6 +16,7 @@ buildConfig {
     buildConfigField("PLUGIN_VERSION", BuildConfig.PLUGIN_VERSION)
     buildConfigField("VERSION", BuildConfig.VERSION)
     buildConfigField("GROUP", BuildConfig.GROUP)
+    buildConfigField("API_ARTIFACT", BuildConfig.API_ARTIFACT)
     buildConfigField("COMPILER_PLUGIN_ID", BuildConfig.COMPILER_PLUGIN_ID)
     buildConfigField("COMPILER_PLUGIN_ARTIFACT", BuildConfig.COMPILER_PLUGIN_ARTIFACT)
     buildConfigField("GRADLE_PLUGIN_ID", BuildConfig.GRADLE_PLUGIN_ID)
@@ -31,6 +32,15 @@ gradlePlugin {
             description = BuildConfig.DESCRIPTION
             tags = BuildConfig.TAGS
             implementationClass = "${BuildConfig.PACKAGE_NAME}.gradle.KTNGradlePlugin"
+        }
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "localPluginRepository"
+            url = uri("/Users/Desmond/local-plugin-repository")
         }
     }
 }

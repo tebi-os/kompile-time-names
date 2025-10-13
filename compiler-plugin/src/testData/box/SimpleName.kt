@@ -1,5 +1,6 @@
 package foo.bar
 
+import com.tebi.ktn.KompileTimeNamesUsage
 import com.tebi.ktn.kompileTimeSimpleName
 
 
@@ -7,6 +8,7 @@ class SomeClass {
     companion object
 }
 
+@OptIn(KompileTimeNamesUsage::class)
 fun box(): String {
     val actual = listOf(
         kompileTimeSimpleName<String>(),

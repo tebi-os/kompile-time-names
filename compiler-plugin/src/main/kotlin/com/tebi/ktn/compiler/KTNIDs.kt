@@ -1,22 +1,14 @@
-package com.tebi.ktn
+package com.tebi.ktn.compiler
 
-import org.jetbrains.kotlin.GeneratedDeclarationKey
 import org.jetbrains.kotlin.name.CallableId
-import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 
 
 object KTNIDs {
 
-    object GeneratorKey : GeneratedDeclarationKey()
-
     object PackageNames {
         val KompileTimeNames = FqName.fromSegments(listOf("com", "tebi", "ktn"))
-    }
-
-    object ClassIDs {
-        val NotImplementedError = ClassId.fromString("kotlin/NotImplementedError")
     }
 
     object CallableIDs {

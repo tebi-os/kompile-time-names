@@ -1,4 +1,4 @@
-package com.tebi.ktn
+package com.tebi.ktn.compiler
 
 import org.jetbrains.kotlin.compiler.plugin.AbstractCliOption
 import org.jetbrains.kotlin.compiler.plugin.CliOption
@@ -8,7 +8,7 @@ import org.jetbrains.kotlin.config.CompilerConfiguration
 
 class KTNCommandLineProcessor : CommandLineProcessor {
 
-    override val pluginId = BuildConfig.PLUGIN_ID
+    override val pluginId = BuildConfig.COMPILER_PLUGIN_ID
 
     override val pluginOptions = emptyList<CliOption>()
 
