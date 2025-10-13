@@ -2,6 +2,9 @@ package com.tebi.ktn.gradle
 
 import org.gradle.api.Project
 import org.gradle.api.provider.Provider
+import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
+import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.dsl.kotlinExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilerPluginSupportPlugin
@@ -49,6 +52,7 @@ class KTNGradlePlugin : KotlinCompilerPluginSupportPlugin {
 
     private fun Project.addApiDependency() {
         val dependency = dependencies.create("${BuildConfig.GROUP}:${BuildConfig.API_ARTIFACT}:${BuildConfig.VERSION}")
+        val kompileTimeNamesUsage = "${BuildConfig.PACKAGE_NAME}.KompileTimeNamesUsage"
 
         plugins.withId("org.jetbrains.kotlin.jvm") {
             dependencies.add("implementation", dependency)
@@ -57,12 +61,39 @@ class KTNGradlePlugin : KotlinCompilerPluginSupportPlugin {
             plugins.withId("java-test-fixtures") {
                 dependencies.add("testFixturesImplementation", dependency)
             }
+
+            extensions.getByType(KotlinJvmProjectExtension::class.java).apply {
+                compilerOptions {
+                    optIn.add(kompileTimeNamesUsage)
+                }
+            }
+        }
+
+        plugins.withId("org.jetbrains.kotlin.android") {
+            dependencies.add("implementation", dependency)
+            dependencies.add("testImplementation", dependency)
+
+            plugins.withId("java-test-fixtures") {
+                dependencies.add("testFixturesImplementation", dependency)
+            }
+
+            extensions.getByType(KotlinAndroidProjectExtension::class.java).apply {
+                compilerOptions {
+                    optIn.add(kompileTimeNamesUsage)
+                }
+            }
         }
 
         plugins.withId("org.jetbrains.kotlin.multiplatform") {
             kotlinExtension.sourceSets.named("commonMain").configure {
                 it.dependencies {
                     implementation(dependency)
+                }
+            }
+
+            extensions.getByType(KotlinMultiplatformExtension::class.java).apply {
+                compilerOptions {
+                    optIn.add(kompileTimeNamesUsage)
                 }
             }
         }

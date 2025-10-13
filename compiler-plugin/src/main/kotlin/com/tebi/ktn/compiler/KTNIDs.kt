@@ -1,6 +1,9 @@
 package com.tebi.ktn.compiler
 
+import org.jetbrains.kotlin.GeneratedDeclarationKey
+import org.jetbrains.kotlin.ir.declarations.IrDeclarationOrigin
 import org.jetbrains.kotlin.name.CallableId
+import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 
@@ -16,8 +19,12 @@ object KTNIDs {
         val KompileTimeSimpleName = CallableId(PackageNames.KompileTimeNames, Name.identifier("kompileTimeSimpleName"))
     }
 
-    object TypeParameterNames {
-        val T = Name.identifier("T")
+    object ClassIDs {
+        val WithKompileTimeNames = ClassId(PackageNames.KompileTimeNames, Name.identifier("WithKompileTimeNames"))
     }
+
+    object PluginKey : GeneratedDeclarationKey()
+
+    val PluginOrigin = IrDeclarationOrigin.GeneratedByPlugin(PluginKey)
 
 }

@@ -16,6 +16,7 @@ buildConfig {
     buildConfigField("PLUGIN_VERSION", BuildConfig.PLUGIN_VERSION)
     buildConfigField("VERSION", BuildConfig.VERSION)
     buildConfigField("GROUP", BuildConfig.GROUP)
+    buildConfigField("PACKAGE_NAME", BuildConfig.PACKAGE_NAME)
     buildConfigField("API_ARTIFACT", BuildConfig.API_ARTIFACT)
     buildConfigField("COMPILER_PLUGIN_ID", BuildConfig.COMPILER_PLUGIN_ID)
     buildConfigField("COMPILER_PLUGIN_ARTIFACT", BuildConfig.COMPILER_PLUGIN_ARTIFACT)

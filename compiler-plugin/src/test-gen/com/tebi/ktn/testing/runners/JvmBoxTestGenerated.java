@@ -26,10 +26,4 @@ public class JvmBoxTestGenerated extends AbstractJvmBoxTest {
   public void testQualifiedName() {
     runTest("compiler-plugin/src/testData/box/QualifiedName.kt");
   }
-
-  @Test
-  @TestMetadata("SimpleName.kt")
-  public void testSimpleName() {
-    runTest("compiler-plugin/src/testData/box/SimpleName.kt");
-  }
 }

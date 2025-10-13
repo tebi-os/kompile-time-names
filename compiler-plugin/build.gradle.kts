@@ -43,6 +43,7 @@ dependencies {
 buildConfig {
     packageName("${BuildConfig.PACKAGE_NAME}.compiler")
 
+    buildConfigField("DISPLAY_NAME", BuildConfig.DISPLAY_NAME)
     buildConfigField("COMPILER_PLUGIN_ID", BuildConfig.COMPILER_PLUGIN_ID)
 }
 
@@ -84,6 +85,7 @@ tasks.test {
 
 kotlin {
     compilerOptions {
+        freeCompilerArgs.add("-Xcontext-parameters")
         optIn.add("org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi")
         optIn.add("org.jetbrains.kotlin.fir.extensions.ExperimentalTopLevelDeclarationsGenerationApi")
     }
