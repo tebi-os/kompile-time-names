@@ -23,6 +23,9 @@ class WithKompileTimeNamesUsageChecker : FirTypeParameterChecker(MppCheckerKind.
         if (declaration.bounds.none { it.coneTypeOrNull?.isMarkedNullable == false }) {
             reporter.reportOn(declaration.source, KTNErrors.KTN_TYPE_PARAM_NULLABLE_BOUND)
         }
+        if (!declaration.containingDeclarationSymbol.hasAnnotation(KTNIDs.ClassIDs.KompileTimeNamesUsage, context.session)) {
+            reporter.reportOn(declaration.containingDeclarationSymbol.source, KTNErrors.KTN_MISSING_USAGE_ANNOTATION)
+        }
     }
 
 }
