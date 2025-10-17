@@ -48,7 +48,7 @@ FILE fqName:foo.bar fileName:/QualifiedName.kt
             CONST String type=kotlin.String value="kotlin.String"
             CONST String type=kotlin.String value="foo.bar.SomeClass"
             CONST String type=kotlin.String value="foo.bar.SomeClass.Companion"
-            CALL 'public final fun someFunction <T> (someValue: kotlin.Int, T$qualifiedName: kotlin.String?): kotlin.String? declared in foo.bar' type=kotlin.String? origin=null
+            CALL 'public final fun someFunction$wktn <T> (someValue: kotlin.Int, T$qualifiedName: kotlin.String?): kotlin.String? declared in foo.bar' type=kotlin.String? origin=null
               TYPE_ARG T: foo.bar.SomeClass
               ARG someValue: CONST Int type=kotlin.Int value=2
               ARG T$qualifiedName: CONST String type=kotlin.String value="foo.bar.SomeClass"
@@ -74,24 +74,51 @@ FILE fqName:foo.bar fileName:/QualifiedName.kt
               STRING_CONCATENATION type=kotlin.String
                 CONST String type=kotlin.String value="Fail: "
                 GET_VAR 'val actual: kotlin.collections.List<kotlin.String?> declared in foo.bar.box' type=kotlin.collections.List<kotlin.String?> origin=null
-  FUN name:someFunction visibility:public modality:FINAL returnType:kotlin.String? [inline]
+  FUN name:someFunction$wktn visibility:public modality:FINAL returnType:kotlin.String? [inline]
     TYPE_PARAMETER name:T index:0 variance: superTypes:[kotlin.Any] reified:true
       annotations:
         WithKompileTimeNames
     VALUE_PARAMETER kind:Regular name:someValue index:0 type:kotlin.Int
     VALUE_PARAMETER GENERATED[com.tebi.ktn.compiler.KTNIDs.PluginKey] kind:Regular name:T$qualifiedName index:1 type:kotlin.String?
+    annotations:
+      KompileTimeNamesUsage
     BLOCK_BODY
-      RETURN type=kotlin.Nothing from='public final fun someFunction <T> (someValue: kotlin.Int, T$qualifiedName: kotlin.String?): kotlin.String? declared in foo.bar'
-        CALL 'public final fun someFunction2 <U> (someValue2: kotlin.Int, U$qualifiedName: kotlin.String?): kotlin.String? declared in foo.bar' type=kotlin.String? origin=null
-          TYPE_ARG U: T of foo.bar.someFunction
-          ARG someValue2: GET_VAR 'someValue: kotlin.Int declared in foo.bar.someFunction' type=kotlin.Int origin=null
-          ARG U$qualifiedName: GET_VAR 'T$qualifiedName: kotlin.String? declared in foo.bar.someFunction' type=kotlin.String? origin=null
-  FUN name:someFunction2 visibility:public modality:FINAL returnType:kotlin.String? [inline]
+      RETURN type=kotlin.Nothing from='public final fun someFunction$wktn <T> (someValue: kotlin.Int, T$qualifiedName: kotlin.String?): kotlin.String? declared in foo.bar'
+        CALL 'public final fun someFunction2$wktn <U> (someValue2: kotlin.Int, U$qualifiedName: kotlin.String?): kotlin.String? declared in foo.bar' type=kotlin.String? origin=null
+          TYPE_ARG U: T of foo.bar.someFunction$wktn
+          ARG someValue2: GET_VAR 'someValue: kotlin.Int declared in foo.bar.someFunction$wktn' type=kotlin.Int origin=null
+          ARG U$qualifiedName: GET_VAR 'T$qualifiedName: kotlin.String? declared in foo.bar.someFunction$wktn' type=kotlin.String? origin=null
+  FUN name:someFunction2$wktn visibility:public modality:FINAL returnType:kotlin.String? [inline]
     TYPE_PARAMETER name:U index:0 variance: superTypes:[kotlin.Any] reified:true
       annotations:
         WithKompileTimeNames
     VALUE_PARAMETER kind:Regular name:someValue2 index:0 type:kotlin.Int
     VALUE_PARAMETER GENERATED[com.tebi.ktn.compiler.KTNIDs.PluginKey] kind:Regular name:U$qualifiedName index:1 type:kotlin.String?
+    annotations:
+      KompileTimeNamesUsage
     BLOCK_BODY
-      RETURN type=kotlin.Nothing from='public final fun someFunction2 <U> (someValue2: kotlin.Int, U$qualifiedName: kotlin.String?): kotlin.String? declared in foo.bar'
-        GET_VAR 'U$qualifiedName: kotlin.String? declared in foo.bar.someFunction2' type=kotlin.String? origin=null
+      RETURN type=kotlin.Nothing from='public final fun someFunction2$wktn <U> (someValue2: kotlin.Int, U$qualifiedName: kotlin.String?): kotlin.String? declared in foo.bar'
+        GET_VAR 'U$qualifiedName: kotlin.String? declared in foo.bar.someFunction2$wktn' type=kotlin.String? origin=null
+FILE fqName:foo.bar fileName:__GENERATED DECLARATIONS__.kt
+  FUN GENERATED[com.tebi.ktn.compiler.KTNIDs.PluginKey] name:someFunction visibility:public modality:FINAL returnType:kotlin.String? [inline]
+    TYPE_PARAMETER GENERATED[com.tebi.ktn.compiler.KTNIDs.PluginKey] name:T index:0 variance: superTypes:[kotlin.Any] reified:true
+      annotations:
+        WithKompileTimeNames
+    VALUE_PARAMETER GENERATED[com.tebi.ktn.compiler.KTNIDs.PluginKey] kind:Regular name:someValue index:0 type:kotlin.Int
+    annotations:
+      KompileTimeNamesUsage
+    EXPRESSION_BODY
+      THROW type=kotlin.Nothing
+        CONSTRUCTOR_CALL 'public constructor <init> (message: kotlin.String) declared in kotlin.NotImplementedError' type=kotlin.NotImplementedError origin=null
+          ARG message: CONST String type=kotlin.String value="This invocation of foo.bar.someFunction should have been transformed at compile-time. Make sure you have applied the com.tebi.kompile-time-names Gradle plugin to every module that uses this function either directly or indirectly using an inline function."
+  FUN GENERATED[com.tebi.ktn.compiler.KTNIDs.PluginKey] name:someFunction2 visibility:public modality:FINAL returnType:kotlin.String? [inline]
+    TYPE_PARAMETER GENERATED[com.tebi.ktn.compiler.KTNIDs.PluginKey] name:U index:0 variance: superTypes:[kotlin.Any] reified:true
+      annotations:
+        WithKompileTimeNames
+    VALUE_PARAMETER GENERATED[com.tebi.ktn.compiler.KTNIDs.PluginKey] kind:Regular name:someValue2 index:0 type:kotlin.Int
+    annotations:
+      KompileTimeNamesUsage
+    EXPRESSION_BODY
+      THROW type=kotlin.Nothing
+        CONSTRUCTOR_CALL 'public constructor <init> (message: kotlin.String) declared in kotlin.NotImplementedError' type=kotlin.NotImplementedError origin=null
+          ARG message: CONST String type=kotlin.String value="This invocation of foo.bar.someFunction2 should have been transformed at compile-time. Make sure you have applied the com.tebi.kompile-time-names Gradle plugin to every module that uses this function either directly or indirectly using an inline function."

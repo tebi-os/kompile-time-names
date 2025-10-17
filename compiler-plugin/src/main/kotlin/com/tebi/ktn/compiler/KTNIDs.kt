@@ -16,11 +16,25 @@ object KTNIDs {
 
     object CallableIDs {
         val KompileTimeQualifiedName = CallableId(PackageNames.KompileTimeNames, Name.identifier("kompileTimeQualifiedName"))
-        val KompileTimeSimpleName = CallableId(PackageNames.KompileTimeNames, Name.identifier("kompileTimeSimpleName"))
     }
 
     object ClassIDs {
+        val NotImplementedError = ClassId.fromString("kotlin/NotImplementedError")
+        val KompileTimeNamesUsage = ClassId(PackageNames.KompileTimeNames, Name.identifier("KompileTimeNamesUsage"))
         val WithKompileTimeNames = ClassId(PackageNames.KompileTimeNames, Name.identifier("WithKompileTimeNames"))
+    }
+
+    fun makeQualifiedNameValueParameterName(typeParameterName: Name): Name {
+        return Name.identifier(typeParameterName.identifier + $$"$qualifiedName")
+    }
+
+    fun transformWithKompileTimeNamesFunctionName(functionName: Name): Name {
+        return Name.identifier(functionName.identifier + $$"$wktn")
+    }
+
+    fun originalWithKompileTimeNamesFunctionName(functionName: Name): Name {
+        check(functionName.identifier.endsWith($$"$wktn"))
+        return Name.identifier(functionName.identifier.dropLast(5))
     }
 
     object PluginKey : GeneratedDeclarationKey()

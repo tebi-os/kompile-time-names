@@ -7,6 +7,7 @@ class KTNFirRegistrar : FirExtensionRegistrar() {
 
     override fun ExtensionRegistrarContext.configurePlugin() {
         +::KTNAdditionalCheckersExtension
+        +::WithKompileTimeNamesFunctionGenerator
 
         registerDiagnosticContainers(KTNErrors)
     }

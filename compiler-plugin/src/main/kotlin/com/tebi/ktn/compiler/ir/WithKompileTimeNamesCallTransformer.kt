@@ -2,6 +2,7 @@ package com.tebi.ktn.compiler.ir
 
 import com.tebi.ktn.compiler.KTNIDs
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
+import org.jetbrains.kotlin.ir.declarations.IrDeclarationOrigin
 import org.jetbrains.kotlin.ir.declarations.IrSymbolOwner
 import org.jetbrains.kotlin.ir.expressions.IrCall
 import org.jetbrains.kotlin.ir.expressions.IrExpression
@@ -13,6 +14,7 @@ import org.jetbrains.kotlin.ir.types.IrType
 import org.jetbrains.kotlin.ir.types.classOrNull
 import org.jetbrains.kotlin.ir.types.classifierOrNull
 import org.jetbrains.kotlin.ir.util.SYNTHETIC_OFFSET
+import org.jetbrains.kotlin.ir.util.callableId
 import org.jetbrains.kotlin.ir.util.fqNameWhenAvailable
 import org.jetbrains.kotlin.ir.util.hasAnnotation
 import org.jetbrains.kotlin.ir.util.toIrConst
@@ -21,7 +23,7 @@ import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
 
 class WithKompileTimeNamesCallTransformer(
     private val context: IrPluginContext,
-    private val transformedFunctions: MutableMap<IrSimpleFunctionSymbol, List<GeneratedQualifiedNameParameter>>,
+    private val transformations: WithKompileTimeNamesTransformations,
 ) : IrElementTransformerVoid() {
 
     private val kompileTimeQualifiedNameSymbol = context
@@ -33,13 +35,18 @@ class WithKompileTimeNamesCallTransformer(
             return substituteKompileTimeQualifiedName(expression)
         }
 
-        transformedFunctions[expression.symbol]?.let { cachedAdditionalParameters ->
-            addAdditionalArguments(expression, cachedAdditionalParameters)
+        transformations.getShadowedFunction(expression.symbol)?.let { originalFunctionSymbol ->
+            expression.symbol = originalFunctionSymbol
+        }
+
+        transformations.getGeneratedQualifiedNameParameters(expression.symbol)?.let { additionalParameters ->
+            addAdditionalArguments(expression, additionalParameters)
             return super.visitCall(expression)
         }
 
-        checkFunction(expression)?.let { additionalParameters ->
+        checkExternalFunction(expression)?.let { (originalFunctionSymbol, additionalParameters) ->
             addAdditionalArguments(expression, additionalParameters)
+            expression.symbol = originalFunctionSymbol
             return super.visitCall(expression)
         }
 
@@ -47,31 +54,41 @@ class WithKompileTimeNamesCallTransformer(
     }
 
     @OptIn(UnsafeDuringIrConstructionAPI::class)
-    private fun checkFunction(expression: IrCall): List<GeneratedQualifiedNameParameter>? {
+    private fun checkExternalFunction(expression: IrCall): Pair<IrSimpleFunctionSymbol, List<GeneratedQualifiedNameParameter>>? {
         val declaration = expression.symbol.owner
 
-        if (declaration.parameters.size <= expression.arguments.size) {
-            return null
-        }
+        if (
+            declaration.origin != IrDeclarationOrigin.IR_EXTERNAL_DECLARATION_STUB ||
+            declaration.typeParameters.none { it.hasAnnotation(KTNIDs.ClassIDs.WithKompileTimeNames) }
+        ) return null
+
+        val transformedCallableId = declaration.callableId.copy(
+            callableName = KTNIDs.transformWithKompileTimeNamesFunctionName(declaration.callableId.callableName),
+        )
+        val transformedDeclarationSymbols = context.referenceFunctions(transformedCallableId)
+        val transformedDeclaration = transformedDeclarationSymbols.singleOrNull()?.owner
+            ?: error("Could not resolve transformed function of ${declaration.fqNameWhenAvailable}")
 
         val annotatedTypeParameters = declaration.typeParameters
             .filter { it.hasAnnotation(KTNIDs.ClassIDs.WithKompileTimeNames) }
 
-        if (declaration.parameters.size - expression.arguments.size != annotatedTypeParameters.size) {
+        if (transformedDeclaration.parameters.size - declaration.parameters.size != annotatedTypeParameters.size) {
             // TODO: Diagnostics error
             return null
         }
 
-        val result = annotatedTypeParameters.mapIndexed { index, typeParameter ->
+        val additionalParameters = annotatedTypeParameters.mapIndexed { index, typeParameter ->
             GeneratedQualifiedNameParameter(
                 typeParameter = typeParameter,
-                qualifiedNameParameter = declaration.parameters[declaration.parameters.size - expression.arguments.size + index],
+                qualifiedNameParameter = transformedDeclaration.parameters[
+                    transformedDeclaration.parameters.size - declaration.parameters.size + index
+                ],
             )
         }
 
-        transformedFunctions[expression.symbol] = result
+        transformations.register(transformedDeclaration, declaration, additionalParameters)
 
-        return result
+        return Pair(transformedDeclaration.symbol, additionalParameters)
     }
 
     private fun substituteKompileTimeQualifiedName(expression: IrCall): IrExpression {
@@ -112,19 +129,19 @@ class WithKompileTimeNamesCallTransformer(
             return null.toIrConst(startOffset, endOffset)
         }
 
-        val functionSymbol = (typeParameterSymbol.owner.parent as? IrSymbolOwner)?.symbol
+        val functionSymbol = (typeParameterSymbol.owner.parent as? IrSymbolOwner)?.symbol as? IrSimpleFunctionSymbol
         if (functionSymbol == null) {
             // TODO: Diagnostics error
             return null.toIrConst(startOffset, endOffset)
         }
 
-        val functionAdditionalParameters = transformedFunctions[functionSymbol]
-        if (functionAdditionalParameters == null) {
+        val additionalParameters = transformations.getGeneratedQualifiedNameParameters(functionSymbol)
+        if (additionalParameters == null) {
             // TODO: Diagnostics error
             return null.toIrConst(startOffset, endOffset)
         }
 
-        val param = functionAdditionalParameters.firstOrNull { it.typeParameter.symbol == typeParameterSymbol }
+        val param = additionalParameters.firstOrNull { it.typeParameter.symbol == typeParameterSymbol }
         if (param == null) {
             // TODO: Diagnostics error
             return null.toIrConst(startOffset, endOffset)
