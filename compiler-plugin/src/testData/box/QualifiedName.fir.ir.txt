@@ -82,6 +82,7 @@ FILE fqName:foo.bar fileName:/QualifiedName.kt
     VALUE_PARAMETER GENERATED[com.tebi.ktn.compiler.KTNIDs.PluginKey] kind:Regular name:T$qualifiedName index:1 type:kotlin.String?
     annotations:
       KompileTimeNames
+      HiddenFromObjC
     BLOCK_BODY
       RETURN type=kotlin.Nothing from='public final fun someFunction <T> (someValue: kotlin.Int, T$qualifiedName: kotlin.String?): kotlin.String? declared in foo.bar'
         CALL 'public final fun someFunction2 <U> (someValue2: kotlin.Int, U$qualifiedName: kotlin.String?): kotlin.String? declared in foo.bar' type=kotlin.String? origin=null
@@ -96,6 +97,7 @@ FILE fqName:foo.bar fileName:/QualifiedName.kt
     VALUE_PARAMETER GENERATED[com.tebi.ktn.compiler.KTNIDs.PluginKey] kind:Regular name:U$qualifiedName index:1 type:kotlin.String?
     annotations:
       KompileTimeNames
+      HiddenFromObjC
     BLOCK_BODY
       RETURN type=kotlin.Nothing from='public final fun someFunction2 <U> (someValue2: kotlin.Int, U$qualifiedName: kotlin.String?): kotlin.String? declared in foo.bar'
         GET_VAR 'U$qualifiedName: kotlin.String? declared in foo.bar.someFunction2' type=kotlin.String? origin=null

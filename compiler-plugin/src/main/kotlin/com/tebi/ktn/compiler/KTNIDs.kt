@@ -23,6 +23,7 @@ object KTNIDs {
         val KompileTimeNames = ClassId(PackageNames.KompileTimeNames, Name.identifier("KompileTimeNames"))
         val WithQualifiedName = ClassId(PackageNames.KompileTimeNames, Name.identifier("WithQualifiedName"))
         val WithSimpleName = ClassId(PackageNames.KompileTimeNames, Name.identifier("WithSimpleName"))
+        val HiddenFromObjC = ClassId.fromString("kotlin/native/HiddenFromObjC")
     }
 
     object PluginKey : GeneratedDeclarationKey()

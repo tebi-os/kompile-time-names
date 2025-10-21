@@ -82,6 +82,7 @@ FILE fqName:foo.bar fileName:/SimpleName.kt
     VALUE_PARAMETER GENERATED[com.tebi.ktn.compiler.KTNIDs.PluginKey] kind:Regular name:T$simpleName index:1 type:kotlin.String?
     annotations:
       KompileTimeNames
+      HiddenFromObjC
     BLOCK_BODY
       RETURN type=kotlin.Nothing from='public final fun someFunction <T> (someValue: kotlin.Int, T$simpleName: kotlin.String?): kotlin.String? declared in foo.bar'
         CALL 'public final fun someFunction2 <U> (someValue2: kotlin.Int, U$simpleName: kotlin.String?): kotlin.String? declared in foo.bar' type=kotlin.String? origin=null
@@ -96,6 +97,7 @@ FILE fqName:foo.bar fileName:/SimpleName.kt
     VALUE_PARAMETER GENERATED[com.tebi.ktn.compiler.KTNIDs.PluginKey] kind:Regular name:U$simpleName index:1 type:kotlin.String?
     annotations:
       KompileTimeNames
+      HiddenFromObjC
     BLOCK_BODY
       RETURN type=kotlin.Nothing from='public final fun someFunction2 <U> (someValue2: kotlin.Int, U$simpleName: kotlin.String?): kotlin.String? declared in foo.bar'
         GET_VAR 'U$simpleName: kotlin.String? declared in foo.bar.someFunction2' type=kotlin.String? origin=null

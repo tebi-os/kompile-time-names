@@ -56,6 +56,7 @@ FILE fqName:foo.bar fileName:/Mixed.kt
     VALUE_PARAMETER GENERATED[com.tebi.ktn.compiler.KTNIDs.PluginKey] kind:Regular name:T$simpleName index:1 type:kotlin.String?
     annotations:
       KompileTimeNames
+      HiddenFromObjC
     BLOCK_BODY
       RETURN type=kotlin.Nothing from='public final fun someFunction <T> (T$qualifiedName: kotlin.String?, T$simpleName: kotlin.String?): kotlin.String? declared in foo.bar'
         STRING_CONCATENATION type=kotlin.String
