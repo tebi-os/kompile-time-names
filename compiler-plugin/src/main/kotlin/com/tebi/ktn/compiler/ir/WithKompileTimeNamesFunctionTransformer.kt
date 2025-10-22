@@ -7,13 +7,10 @@ import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.builders.declarations.addValueParameter
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 import org.jetbrains.kotlin.ir.expressions.IrCall
-import org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl
 import org.jetbrains.kotlin.ir.symbols.IrSimpleFunctionSymbol
 import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
-import org.jetbrains.kotlin.ir.types.defaultType
 import org.jetbrains.kotlin.ir.types.makeNullable
 import org.jetbrains.kotlin.ir.util.SYNTHETIC_OFFSET
-import org.jetbrains.kotlin.ir.util.constructors
 import org.jetbrains.kotlin.ir.util.hasAnnotation
 import org.jetbrains.kotlin.ir.visitors.IrTransformer
 import org.jetbrains.kotlin.name.Name
@@ -24,10 +21,6 @@ class WithKompileTimeNamesFunctionTransformer(
 ) : IrTransformer<MutableMap<IrSimpleFunctionSymbol, List<GeneratedParameters>>>() {
 
     /* Properties */
-
-    @OptIn(UnsafeDuringIrConstructionAPI::class)
-    private val hiddenFromObjCClass = context
-        .referenceClass(KTNIDs.ClassIDs.HiddenFromObjC)
 
     private val nullableStringType = context.irBuiltIns.stringType.makeNullable()
 
@@ -50,8 +43,6 @@ class WithKompileTimeNamesFunctionTransformer(
         ) {
             return super.visitSimpleFunction(declaration, data)
         }
-
-        declaration.addHiddenFromObjCAnnotation()
 
         data[declarationSymbol] = declaration.addKompileTimeNameParameters()
 
@@ -89,19 +80,6 @@ class WithKompileTimeNamesFunctionTransformer(
 
 
     /* Private functions */
-
-    @UnsafeDuringIrConstructionAPI
-    private fun IrSimpleFunction.addHiddenFromObjCAnnotation() {
-        val hiddenFromObjCClass = hiddenFromObjCClass ?: return
-        annotations += IrConstructorCallImpl(
-            startOffset = SYNTHETIC_OFFSET,
-            endOffset = SYNTHETIC_OFFSET,
-            type = hiddenFromObjCClass.defaultType,
-            symbol = hiddenFromObjCClass.constructors.single(),
-            typeArgumentsCount = 0,
-            constructorTypeArgumentsCount = 0,
-        )
-    }
 
     private fun IrSimpleFunction.addKompileTimeNameParameters() = typeParameters.mapNotNull { typeParameter ->
         val qualifiedNameParameter = if (typeParameter.hasAnnotation(KTNIDs.ClassIDs.WithQualifiedName)) {

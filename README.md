@@ -8,7 +8,7 @@ targets where qualified names normally aren't available through reflection such 
 This plugin can only be added using Gradle:
 ```kotlin
 plugins {
-    id("com.tebi.kompile-time-names") version "1.0.1"
+    id("com.tebi.kompile-time-names") version "1.0.2"
 }
 ```
 

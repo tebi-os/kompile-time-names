@@ -1,5 +1,8 @@
 package com.tebi.ktn
 
+import kotlin.experimental.ExperimentalObjCRefinement
+import kotlin.native.HidesFromObjC
+
 
 /**
  * Every function that uses [WithQualifiedName] or [WithSimpleName] annotations on its type arguments must itself
@@ -12,13 +15,14 @@ package com.tebi.ktn
         "your module. If you apply the plugin you do not need to manually opt-in.",
 )
 @Retention(AnnotationRetention.BINARY)
-@Target(AnnotationTarget.FUNCTION, AnnotationTarget.ANNOTATION_CLASS)
+@Target(AnnotationTarget.FUNCTION)
+@OptIn(ExperimentalObjCRefinement::class)
+@HidesFromObjC
 public annotation class KompileTimeNames
 
 
 @Retention(AnnotationRetention.BINARY)
 @Target(AnnotationTarget.TYPE_PARAMETER)
-@KompileTimeNames
 public annotation class WithQualifiedName
 
 @KompileTimeNames
@@ -34,7 +38,6 @@ public inline fun <@WithQualifiedName reified T : Any> kompileTimeQualifiedName(
 
 @Retention(AnnotationRetention.BINARY)
 @Target(AnnotationTarget.TYPE_PARAMETER)
-@KompileTimeNames
 public annotation class WithSimpleName
 
 @KompileTimeNames
