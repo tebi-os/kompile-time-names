@@ -1,5 +1,5 @@
 [versions]
-kotlin = "2.2.20" # https://github.com/jetbrains/kotlin/releases
+kotlin = "2.2.21" # https://github.com/jetbrains/kotlin/releases
 junit = "4.13.2" # https://github.com/junit-team/junit4/releases
 buildConfig = "5.7.0" # https://github.com/gmazzo/gradle-buildconfig-plugin/releases
 mavenPublish = "0.34.0" # https://github.com/vanniktech/gradle-maven-publish-plugin/releases
