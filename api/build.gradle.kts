@@ -71,7 +71,7 @@ mavenPublishing {
 
     configure(KotlinMultiplatform())
 
-    publishToMavenCentral(automaticRelease = true)
+    publishToMavenCentral(automaticRelease = true, validateDeployment = false)
 
     signAllPublications()
 }
