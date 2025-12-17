@@ -12,7 +12,7 @@ import org.jetbrains.kotlin.mpp.SimpleFunctionSymbolMarker
 class WithKompileTimeNamesUsageChecker : FirTypeParameterChecker(MppCheckerKind.Common) {
 
     context(context: CheckerContext, reporter: DiagnosticReporter)
-    override fun check(declaration: FirTypeParameter) = context(context.session) {
+    override fun check(declaration: FirTypeParameter): Unit = context(context.session) {
         if (!declaration.hasWithKompileTimeNameAnnotation()) return
 
         val containingDeclarationSymbol = declaration.containingDeclarationSymbol

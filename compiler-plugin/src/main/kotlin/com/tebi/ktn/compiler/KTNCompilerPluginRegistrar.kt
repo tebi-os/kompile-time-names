@@ -10,6 +10,8 @@ import org.jetbrains.kotlin.fir.extensions.FirExtensionRegistrarAdapter
 
 class KTNCompilerPluginRegistrar : CompilerPluginRegistrar() {
 
+    override val pluginId = BuildConfig.COMPILER_PLUGIN_ID
+
     override val supportsK2 = true
 
     override fun ExtensionStorage.registerExtensions(configuration: CompilerConfiguration) {
