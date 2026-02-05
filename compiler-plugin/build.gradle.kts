@@ -1,3 +1,4 @@
+import com.vanniktech.maven.publish.DeploymentValidation
 import com.vanniktech.maven.publish.KotlinJvm
 
 plugins {
@@ -56,7 +57,10 @@ mavenPublishing {
 
     configure(KotlinJvm())
 
-    publishToMavenCentral(automaticRelease = true)
+    publishToMavenCentral(
+        automaticRelease = true,
+        validateDeployment = DeploymentValidation.NONE,
+    )
 
     signAllPublications()
 }

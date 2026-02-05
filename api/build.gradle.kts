@@ -1,3 +1,4 @@
+import com.vanniktech.maven.publish.DeploymentValidation
 import com.vanniktech.maven.publish.KotlinMultiplatform
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
@@ -71,7 +72,10 @@ mavenPublishing {
 
     configure(KotlinMultiplatform())
 
-    publishToMavenCentral(automaticRelease = true, validateDeployment = false)
+    publishToMavenCentral(
+        automaticRelease = true,
+        validateDeployment = DeploymentValidation.NONE,
+    )
 
     signAllPublications()
 }
