@@ -4,6 +4,7 @@ import com.tebi.ktn.compiler.KTNIDs
 import org.jetbrains.kotlin.backend.common.IrElementTransformerVoidWithContext
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.ir.declarations.IrClass
+import org.jetbrains.kotlin.ir.declarations.IrFile
 import org.jetbrains.kotlin.ir.declarations.IrFunction
 import org.jetbrains.kotlin.ir.declarations.IrValueParameter
 import org.jetbrains.kotlin.ir.expressions.IrCall
@@ -17,6 +18,7 @@ import org.jetbrains.kotlin.ir.types.IrType
 import org.jetbrains.kotlin.ir.types.classOrNull
 import org.jetbrains.kotlin.ir.types.classifierOrNull
 import org.jetbrains.kotlin.ir.util.SYNTHETIC_OFFSET
+import org.jetbrains.kotlin.ir.util.callableId
 import org.jetbrains.kotlin.ir.util.fqNameWhenAvailable
 import org.jetbrains.kotlin.ir.util.parents
 import org.jetbrains.kotlin.name.ClassId
@@ -35,26 +37,18 @@ class WithKompileTimeNamesCallTransformer(
 
     private val diagnosticReporter = context.diagnosticReporter
 
-    private val kompileTimeQualifiedNameSymbol = context
-        .referenceFunctions(KTNIDs.CallableIDs.KompileTimeQualifiedName)
-        .singleOrNull()
-        ?: error("Unable to resolve symbol for ${KTNIDs.CallableIDs.KompileTimeQualifiedName}")
-
-    private val kompileTimeSimpleNameSymbol = context
-        .referenceFunctions(KTNIDs.CallableIDs.KompileTimeSimpleName)
-        .singleOrNull()
-        ?: error("Unable to resolve symbol for ${KTNIDs.CallableIDs.KompileTimeSimpleName}")
-
 
     /* Public functions */
 
+    @OptIn(UnsafeDuringIrConstructionAPI::class)
     override fun visitCall(expression: IrCall): IrExpression {
         val expressionSymbol = expression.symbol
+        val callableId = expressionSymbol.owner.callableId
 
-        if (expressionSymbol == kompileTimeQualifiedNameSymbol) {
+        if (callableId == KTNIDs.CallableIDs.KompileTimeQualifiedName) {
             return expression.substituteKompileTimeQualifiedName()
         }
-        if (expressionSymbol == kompileTimeSimpleNameSymbol) {
+        if (callableId == KTNIDs.CallableIDs.KompileTimeSimpleName) {
             return expression.substituteKompileTimeSimpleName()
         }
 

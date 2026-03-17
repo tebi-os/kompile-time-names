@@ -1,9 +1,9 @@
 [versions]
-kotlin = "2.3.10" # https://github.com/jetbrains/kotlin/releases
+kotlin = "2.3.20" # https://github.com/jetbrains/kotlin/releases
 junit = "4.13.2" # https://github.com/junit-team/junit4/releases
-buildConfig = "6.0.7" # https://github.com/gmazzo/gradle-buildconfig-plugin/releases
+buildConfig = "6.0.9" # https://github.com/gmazzo/gradle-buildconfig-plugin/releases
 mavenPublish = "0.36.0" # https://github.com/vanniktech/gradle-maven-publish-plugin/releases
-gradlePublish = "2.0.0" # https://plugins.gradle.org/plugin/com.gradle.plugin-publish
+gradlePublish = "2.1.0" # https://plugins.gradle.org/plugin/com.gradle.plugin-publish
 
 [libraries]
 kotlin-compiler = { module = "org.jetbrains.kotlin:kotlin-compiler", version.ref = "kotlin" }
