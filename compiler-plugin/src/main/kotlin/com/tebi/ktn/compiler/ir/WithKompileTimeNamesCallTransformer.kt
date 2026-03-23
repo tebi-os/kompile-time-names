@@ -1,16 +1,21 @@
 package com.tebi.ktn.compiler.ir
 
 import com.tebi.ktn.compiler.KTNIDs
+import com.tebi.ktn.compiler.KTNIDs.PackageNames
 import org.jetbrains.kotlin.backend.common.IrElementTransformerVoidWithContext
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.ir.declarations.IrClass
+import org.jetbrains.kotlin.ir.declarations.IrDeclarationWithName
 import org.jetbrains.kotlin.ir.declarations.IrFile
 import org.jetbrains.kotlin.ir.declarations.IrFunction
+import org.jetbrains.kotlin.ir.declarations.IrPackageFragment
+import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 import org.jetbrains.kotlin.ir.declarations.IrValueParameter
 import org.jetbrains.kotlin.ir.expressions.IrCall
 import org.jetbrains.kotlin.ir.expressions.IrExpression
 import org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl
 import org.jetbrains.kotlin.ir.expressions.impl.IrGetValueImpl
+import org.jetbrains.kotlin.ir.symbols.IrClassifierSymbol
 import org.jetbrains.kotlin.ir.symbols.IrSimpleFunctionSymbol
 import org.jetbrains.kotlin.ir.symbols.IrTypeParameterSymbol
 import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
@@ -19,8 +24,10 @@ import org.jetbrains.kotlin.ir.types.classOrNull
 import org.jetbrains.kotlin.ir.types.classifierOrNull
 import org.jetbrains.kotlin.ir.util.SYNTHETIC_OFFSET
 import org.jetbrains.kotlin.ir.util.callableId
+import org.jetbrains.kotlin.ir.util.classId
 import org.jetbrains.kotlin.ir.util.fqNameWhenAvailable
 import org.jetbrains.kotlin.ir.util.parents
+import org.jetbrains.kotlin.name.CallableId
 import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.utils.addToStdlib.firstIsInstanceOrNull
 
@@ -43,13 +50,14 @@ class WithKompileTimeNamesCallTransformer(
     @OptIn(UnsafeDuringIrConstructionAPI::class)
     override fun visitCall(expression: IrCall): IrExpression {
         val expressionSymbol = expression.symbol
-        val callableId = expressionSymbol.owner.callableId
+        val expressionSymbolOwner = expressionSymbol.owner
 
-        if (callableId == KTNIDs.CallableIDs.KompileTimeQualifiedName) {
-            return expression.substituteKompileTimeQualifiedName()
-        }
-        if (callableId == KTNIDs.CallableIDs.KompileTimeSimpleName) {
-            return expression.substituteKompileTimeSimpleName()
+        if ((expressionSymbolOwner.parent as? IrPackageFragment)?.packageFqName == PackageNames.KompileTimeNames) {
+            if (expressionSymbolOwner.name == KTNIDs.CallableIDs.KompileTimeQualifiedName.callableName) {
+                return expression.substituteKompileTimeQualifiedName()
+            } else if (expressionSymbolOwner.name == KTNIDs.CallableIDs.KompileTimeSimpleName.callableName) {
+                return expression.substituteKompileTimeSimpleName()
+            }
         }
 
         transformedFunctions[expressionSymbol]?.let { generatedParameters ->
