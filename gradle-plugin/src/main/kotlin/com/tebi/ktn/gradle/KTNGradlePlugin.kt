@@ -1,6 +1,7 @@
 package com.tebi.ktn.gradle
 
 import org.gradle.api.Project
+import org.gradle.api.artifacts.Dependency
 import org.gradle.api.provider.Provider
 import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
@@ -15,6 +16,8 @@ import org.jetbrains.kotlin.gradle.plugin.getKotlinPluginVersion
 
 @Suppress("unused")
 class KTNGradlePlugin : KotlinCompilerPluginSupportPlugin {
+
+    private var androidConfigured = false
 
     override fun apply(target: Project) {
         target.checkCompatibility()
@@ -69,17 +72,23 @@ class KTNGradlePlugin : KotlinCompilerPluginSupportPlugin {
             }
         }
 
+        // AGP <= 8.x: kotlin.android plugin applied explicitly by the user
         plugins.withId("org.jetbrains.kotlin.android") {
-            dependencies.add("implementation", dependency)
-            dependencies.add("testImplementation", dependency)
+            configureAndroid(dependency, kompileTimeNamesAnnotation)
+        }
 
-            plugins.withId("java-test-fixtures") {
-                dependencies.add("testFixturesImplementation", dependency)
-            }
-
-            extensions.getByType(KotlinAndroidProjectExtension::class.java).apply {
-                compilerOptions {
-                    optIn.add(kompileTimeNamesAnnotation)
+        // AGP 9+: built-in Kotlin support means kotlin.android is no longer applied.
+        // Detect Android projects via AGP plugin IDs. Use afterEvaluate to ensure all
+        // plugins have been applied before checking, avoiding false positives with AGP 8.x
+        // where kotlin.android may be applied after the AGP plugin.
+        AGP_PLUGIN_IDS.forEach { pluginId ->
+            plugins.withId(pluginId) {
+                afterEvaluate {
+                    if (!plugins.hasPlugin("org.jetbrains.kotlin.android") &&
+                        !plugins.hasPlugin("org.jetbrains.kotlin.multiplatform")
+                    ) {
+                        configureAndroid(dependency, kompileTimeNamesAnnotation)
+                    }
                 }
             }
         }
@@ -97,6 +106,33 @@ class KTNGradlePlugin : KotlinCompilerPluginSupportPlugin {
                 }
             }
         }
+    }
+
+    private fun Project.configureAndroid(dependency: Dependency, kompileTimeNamesAnnotation: String) {
+        if (androidConfigured) return
+        androidConfigured = true
+
+        dependencies.add("implementation", dependency)
+        dependencies.add("testImplementation", dependency)
+
+        plugins.withId("java-test-fixtures") {
+            dependencies.add("testFixturesImplementation", dependency)
+        }
+
+        extensions.findByType(KotlinAndroidProjectExtension::class.java)?.apply {
+            compilerOptions {
+                optIn.add(kompileTimeNamesAnnotation)
+            }
+        }
+    }
+
+    companion object {
+        private val AGP_PLUGIN_IDS = listOf(
+            "com.android.application",
+            "com.android.library",
+            "com.android.dynamic-feature",
+            "com.android.test",
+        )
     }
 
 }
