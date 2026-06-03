@@ -1,6 +1,6 @@
 FILE fqName:foo.bar fileName:/Mixed.kt
   annotations:
-    OptIn(markerClass = [CLASS_REFERENCE 'CLASS IR_EXTERNAL_DECLARATION_STUB ANNOTATION_CLASS name:KompileTimeNames modality:OPEN visibility:public superTypes:[kotlin.Annotation]' type=kotlin.reflect.KClass<com.tebi.ktn.KompileTimeNames>] type=kotlin.Array<out kotlin.reflect.KClass<out kotlin.Annotation>> varargElementType=kotlin.reflect.KClass<out kotlin.Annotation>)
+    OptIn(markerClass = [KompileTimeNames::class] type=kotlin.Array<out kotlin.reflect.KClass<out kotlin.Annotation>> varargElementType=kotlin.reflect.KClass<out kotlin.Annotation>)
   CLASS CLASS name:SomeClass modality:FINAL visibility:public superTypes:[kotlin.Any]
     thisReceiver: VALUE_PARAMETER INSTANCE_RECEIVER kind:DispatchReceiver name:<this> type:foo.bar.SomeClass
     CONSTRUCTOR visibility:public returnType:foo.bar.SomeClass [primary]
