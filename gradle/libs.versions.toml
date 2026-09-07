@@ -1,8 +1,8 @@
 [versions]
-kotlin = "2.4.10" # https://github.com/jetbrains/kotlin/releases
+kotlin = "2.4.20" # https://github.com/jetbrains/kotlin/releases
 junit = "4.13.2" # https://github.com/junit-team/junit4/releases
-buildConfig = "6.0.9" # https://github.com/gmazzo/gradle-buildconfig-plugin/releases
-mavenPublish = "0.36.0" # https://github.com/vanniktech/gradle-maven-publish-plugin/releases
+buildConfig = "6.0.10" # https://github.com/gmazzo/gradle-buildconfig-plugin/releases
+mavenPublish = "0.37.0" # https://github.com/vanniktech/gradle-maven-publish-plugin/releases
 gradlePublish = "2.1.1" # https://plugins.gradle.org/plugin/com.gradle.plugin-publish
 
 [libraries]
